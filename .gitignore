@@ -1,0 +1,23 @@
+# Files Git should never track or upload.
+
+# Secrets
+.env
+*.env
+*.pem
+*.key
+*credentials*.json
+*service-account*.json
+
+# MaxMind geolocation database (license forbids sharing it)
+*.mmdb
+
+# Python generated files and virtual environments
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Editor and OS files
+.vscode/
+.DS_Store
+Thumbs.db
