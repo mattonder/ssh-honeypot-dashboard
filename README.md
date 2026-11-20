@@ -18,6 +18,6 @@ GVSU CIS 437 Cloud Computing Term Project.
 
 | Role | Responsibilities | Assigned to |
 |---|---|---|
-| Infrastructure and security | GCP project, IAM, firewall rules, VM, Cowrie, log forwarder | TBD |
+| Infrastructure and security | GCP project, IAM, firewall rules, VM, Cowrie, log forwarder | Ben |
 | Data pipeline | Pub/Sub topic, processing function, geolocation, BigQuery table and queries | TBD |
 | Dashboard and demo | Cloud Run dashboard, attack simulation script, screenshots | TBD |
