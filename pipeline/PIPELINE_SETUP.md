@@ -210,7 +210,3 @@ Cleanup before submission:
 
 * Delete the debug subscription `honeypot-events-debug`.
 * Teardown after Week 15: function, topic, dataset, service accounts, and the VM.
-
-## 5. AI use acknowledgment
-
-Claude (Anthropic) was used to review the existing project configuration, design the pipeline and table schema, write and comment the function code, and produce these notes. All commands were run and verified by the team.
