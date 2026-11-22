@@ -29,7 +29,7 @@ What is in place and done well:
 * VM `honeypot-vm` (e2-small, us-central1-a, external IP `34.67.6.81`) runs as a dedicated service account `honeypot-vm@cis437-cyberstudents-honeypot.iam.gserviceaccount.com`. That account has no project roles, so a compromised VM cannot reach other resources.
 * Firewall rule `hp-allow-admin-iap` allows ports 22 and 22222 only from Google's IAP range `35.235.240.0/20`, target tag `honeypot`.
 
-What is still missing or needs attention:
+What is still missing:
 
 * Cowrie is not installed yet. Only the real `sshd` is listening, on port 22. Nothing listens on 2222 or 22222, and there are no iptables redirects.
 * No firewall rule yet lets the internet reach the honeypot. Dr. Zhuang approved real internet exposure.
