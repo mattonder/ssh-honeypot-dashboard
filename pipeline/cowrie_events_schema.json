@@ -1,0 +1,19 @@
+[
+  {"name": "event_time",    "type": "TIMESTAMP", "mode": "REQUIRED", "description": "When Cowrie recorded the event (UTC)"},
+  {"name": "event_type",    "type": "STRING",    "mode": "REQUIRED", "description": "Cowrie eventid, e.g. cowrie.login.failed"},
+  {"name": "session",       "type": "STRING",    "mode": "NULLABLE", "description": "Cowrie session id; groups events from one connection"},
+  {"name": "src_ip",        "type": "STRING",    "mode": "NULLABLE", "description": "Attacker IP address"},
+  {"name": "src_port",      "type": "INTEGER",   "mode": "NULLABLE", "description": "Attacker source port"},
+  {"name": "dst_port",      "type": "INTEGER",   "mode": "NULLABLE", "description": "Honeypot port that was hit"},
+  {"name": "username",      "type": "STRING",    "mode": "NULLABLE", "description": "Username tried (login events only)"},
+  {"name": "password",      "type": "STRING",    "mode": "NULLABLE", "description": "Password tried (login events only)"},
+  {"name": "command_input", "type": "STRING",    "mode": "NULLABLE", "description": "Command typed after login (command events only)"},
+  {"name": "sensor",        "type": "STRING",    "mode": "NULLABLE", "description": "Which honeypot sent the event"},
+  {"name": "country",       "type": "STRING",    "mode": "NULLABLE", "description": "Country from IP geolocation"},
+  {"name": "country_code",  "type": "STRING",    "mode": "NULLABLE", "description": "Two letter country code, used by the map"},
+  {"name": "city",          "type": "STRING",    "mode": "NULLABLE", "description": "City from IP geolocation"},
+  {"name": "latitude",      "type": "FLOAT",     "mode": "NULLABLE", "description": "Latitude from IP geolocation"},
+  {"name": "longitude",     "type": "FLOAT",     "mode": "NULLABLE", "description": "Longitude from IP geolocation"},
+  {"name": "ingested_at",   "type": "TIMESTAMP", "mode": "REQUIRED", "description": "When the function wrote this row"},
+  {"name": "raw_event",     "type": "STRING",    "mode": "NULLABLE", "description": "Original Cowrie JSON, kept for debugging"}
+]
