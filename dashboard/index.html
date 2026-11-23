@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSH Honeypot Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 25px;
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: #f8fafc;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #38bdf8;
+    }
+
+    .subtitle,
+    .panel p {
+      color: #cbd5e1;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .card,
+    .panel {
+      background: #1e293b;
+      padding: 22px;
+      border: 1px solid #334155;
+      border-radius: 10px;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #38bdf8;
+      font-size: 1rem;
+    }
+
+    .value {
+      margin: 0;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .panel {
+      margin-top: 25px;
+    }
+
+    .status {
+      color: #fbbf24;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <header>
+      <h1>SSH Honeypot Dashboard</h1>
+      <p class="subtitle">Track SSH login activity recorded by the Cowrie honeypot.</p>
+    </header>
+
+    <section class="cards" aria-label="SSH activity summary">
+      <div class="card">
+        <h2>Total SSH Login Attempts</h2>
+        <p class="value">—</p>
+      </div>
+
+      <div class="card">
+        <h2>Unique Source IPs</h2>
+        <p class="value">—</p>
+      </div>
+
+      <div class="card">
+        <h2>Source Countries</h2>
+        <p class="value">—</p>
+      </div>
+
+      <div class="card">
+        <h2>Failed SSH Logins</h2>
+        <p class="value">—</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Login Attempts Over Time</h2>
+      <p>A timeline will show when SSH login attempts were recorded.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Source Location Map</h2>
+      <p>The map will show approximate locations based on source IP addresses.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Countries by Login Attempt Count</h2>
+      <p>This section will rank source countries by the number of recorded attempts.</p>
+    </section>
+
+    <p class="status">BigQuery connection pending.</p>
+  </main>
+</body>
+</html>
