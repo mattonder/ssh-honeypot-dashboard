@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SSH Honeypot Dashboard</title>
-
   <style>
     body {
       margin: 0;
@@ -19,13 +18,16 @@
       margin: 0 auto;
     }
 
-    h1 {
+    h1, .card h2 {
       color: #38bdf8;
     }
 
-    .subtitle,
-    .panel p {
+    .subtitle {
       color: #cbd5e1;
+    }
+
+    .status {
+      color: #fbbf24;
     }
 
     .cards {
@@ -35,8 +37,7 @@
       margin-top: 30px;
     }
 
-    .card,
-    .panel {
+    .card, .panel {
       background: #1e293b;
       padding: 22px;
       border: 1px solid #334155;
@@ -45,7 +46,6 @@
 
     .card h2 {
       margin-top: 0;
-      color: #38bdf8;
       font-size: 1rem;
     }
 
@@ -59,18 +59,8 @@
       margin-top: 25px;
     }
 
-    .status {
-      color: #fbbf24;
-    }
-
-    button {
-      padding: 8px 12px;
-      font: inherit;
-    }
-
     .table-scroll {
       overflow-x: auto;
-      margin-top: 16px;
     }
 
     table {
@@ -78,117 +68,70 @@
       border-collapse: collapse;
     }
 
-    th,
-    td {
+    th, td {
       padding: 10px;
       text-align: left;
       border-bottom: 1px solid #334155;
     }
   </style>
 </head>
-
 <body>
   <main>
     <header>
       <h1>SSH Honeypot Dashboard</h1>
-      <p class="subtitle">Track SSH login activity recorded by the Cowrie honeypot.</p>
-      <p class="status">Demo mode · Sample data</p>
+      <p class="subtitle">Track SSH login activity.</p>
+      <p class="status">{{ data_label }}</p>
     </header>
 
     <section class="cards" aria-label="SSH activity summary">
       <div class="card">
-        <h2 id="total-label">Total SSH Login Attempts</h2>
-        <p class="value" id="total-attempts" aria-live="polite" aria-labelledby="total-label">—</p>
+        <h2>Total SSH Login Attempts</h2>
+        <p class="value">{{ total_attempts }}</p>
       </div>
-
       <div class="card">
         <h2>Unique Source IPs</h2>
-        <p class="value">—</p>
+        <p class="value">{{ unique_ips }}</p>
       </div>
-
       <div class="card">
         <h2>Source Countries</h2>
-        <p class="value">—</p>
+        <p class="value">{{ country_count }}</p>
       </div>
-
       <div class="card">
         <h2>Failed SSH Logins</h2>
-        <p class="value">—</p>
+        <p class="value">{{ failed_logins }}</p>
       </div>
     </section>
 
-    <section class="panel">
-      <h2>Login Attempts Over Time</h2>
-      <p>A timeline will show when SSH login attempts were recorded.</p>
-    </section>
-
-    <section class="panel">
-      <h2>Source Location Map</h2>
-      <p>The map will show approximate locations based on source IP addresses.</p>
-    </section>
-
-    <section class="panel">
-      <h2>Countries by Login Attempt Count</h2>
-      <p>This section will rank source countries by the number of recorded attempts.</p>
-    </section>
-
-    <section class="panel" aria-labelledby="recent-attempts-heading">
-      <h2 id="recent-attempts-heading">Recent SSH Login Attempts</h2>
-      <button id="add-attempt" type="button">Add sample attempt</button>
-
-      <div class="table-scroll">
-        <table aria-labelledby="recent-attempts-heading">
-          <thead>
-            <tr>
-              <th scope="col">Time (UTC)</th>
-              <th scope="col">Username</th>
-              <th scope="col">Source country</th>
-            </tr>
-          </thead>
-          <tbody id="attempt-rows"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <p class="status">BigQuery connection pending.</p>
+    {% for title, column, entries in [
+      ("Login Attempts Over Time", "Hour (UTC)", hourly_attempts),
+      ("Countries by Login Attempt Count", "Country", top_countries),
+      ("Top Source IPs", "Source IP", top_ips)
+    ] %}
+      <section class="panel" aria-labelledby="panel-{{ loop.index }}">
+        <h2 id="panel-{{ loop.index }}">{{ title }}</h2>
+        {% if entries %}
+          <div class="table-scroll">
+            <table aria-labelledby="panel-{{ loop.index }}">
+              <thead>
+                <tr>
+                  <th scope="col">{{ column }}</th>
+                  <th scope="col">Attempts</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for name, count in entries %}
+                  <tr><td>{{ name }}</td><td>{{ count }}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% elif total_attempts == 0 %}
+          <p>No login attempts yet.</p>
+        {% else %}
+          <p>No {{ column | lower }} data is available for these attempts.</p>
+        {% endif %}
+      </section>
+    {% endfor %}
   </main>
-
-  <script>
-    const attempts = [
-      { time: "2026-11-23 18:10:00", username: "admin", country: "United States" },
-      { time: "2026-11-23 18:12:00", username: "root", country: "Germany" },
-      { time: "2026-11-23 18:15:00", username: "guest", country: "Brazil" }
-    ];
-
-    const total = document.querySelector("#total-attempts");
-    const rows = document.querySelector("#attempt-rows");
-    const addButton = document.querySelector("#add-attempt");
-
-    function renderAttempts() {
-      total.textContent = attempts.length;
-      rows.replaceChildren();
-
-      for (const attempt of [...attempts].reverse()) {
-        const row = rows.insertRow();
-        row.insertCell().textContent = attempt.time;
-        row.insertCell().textContent = attempt.username;
-        row.insertCell().textContent = attempt.country;
-      }
-    }
-
-    addButton.addEventListener("click", () => {
-      attempts.push({
-        time: "2026-11-23 18:18:00",
-        username: "test",
-        country: "Canada"
-      });
-
-      renderAttempts();
-      addButton.disabled = true;
-      addButton.textContent = "Sample attempt added";
-    });
-
-    renderAttempts();
-  </script>
 </body>
 </html>
